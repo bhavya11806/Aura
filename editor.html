@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aura-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura // human dossier</title>
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="logo-area" onclick="location.href='index.html'">
+      <div class="logo-icon"><i class="fa-solid fa-dna"></i></div>
+      <div class="logo-text">
+        <span class="logo-main" data-translate="logo_main">Aura</span>
+        <span class="logo-sub" data-translate="logo_sub">human dossier</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-item" data-translate="nav_portal"><i class="fa-solid fa-home"></i> Portal</a>
+      <a href="dashboard.html" class="nav-item" data-translate="nav_dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+      <a href="editor.html" class="nav-item active" data-translate="nav_compiler"><i class="fa-solid fa-user-pen"></i> Compiler</a>
+      <a href="settings.html" class="nav-item" data-translate="nav_settings"><i class="fa-solid fa-gears"></i> Settings</a>
+    </nav>
+
+    <!-- Language Selector Dropdown -->
+    <div class="header-lang-wrapper">
+      <i class="fa-solid fa-globe"></i>
+      <select id="header-language-select" class="header-lang-select">
+        <option value="en">EN</option>
+        <option value="hi">HI</option>
+        <option value="es">ES</option>
+      </select>
+    </div>
+
+    <div class="active-profile-badge" id="active-profile-badge" style="display: none;">
+      <img id="header-avatar" src="" alt="Avatar">
+      <div class="badge-text">
+        <span id="header-profile-name" class="profile-name">...</span>
+        <span class="status-indicator"><span class="dot"></span> Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Editor Workspace Split Viewport -->
+  <main class="editor-viewport">
+    <!-- Top Configuration Ribbon -->
+    <section class="editor-ribbon glass-panel">
+      <div class="profile-selector-group">
+        <label for="editor-profile-select" data-translate="working_file_label"><i class="fa-solid fa-folder-open"></i> Working File:</label>
+        <select id="editor-profile-select" onchange="handleProfileSwitch(this.value)">
+          <!-- Profiles populated via JS -->
+        </select>
+        <button class="btn btn-secondary btn-small" onclick="handleNewProfile()"><i class="fa-solid fa-plus"></i> <span data-translate="new_file_btn">New File</span></button>
+        <button class="btn btn-danger btn-small-icon" id="btn-delete-profile" onclick="handleDeleteProfile()" title="Delete Current File"><i class="fa-solid fa-trash-can"></i></button>
+      </div>
+      <div class="editor-actions">
+        <span id="autosave-status" class="autosave-status"><i class="fa-solid fa-circle-check"></i> Dossier Synchronized</span>
+        <button class="btn btn-primary" onclick="saveActiveProfile()"><i class="fa-solid fa-floppy-disk"></i> <span data-translate="save_dossier_btn">Save Dossier</span></button>
+        <button class="btn btn-secondary" onclick="togglePreviewDrawer()"><i class="fa-solid fa-eye"></i> <span data-translate="toggle_preview_btn">Toggle Preview</span></button>
+      </div>
+    </section>
+
+    <!-- Main Workspace Split -->
+    <div class="editor-workspace">
+      <!-- Left: Form Categories Nav -->
+      <aside class="editor-nav-sidebar glass-panel">
+        <button class="sidebar-tab active" data-tab="tab-identity" data-translate="sidebar_identity"><i class="fa-solid fa-user-astronaut"></i> Personal Identity</button>
+        <button class="sidebar-tab" data-tab="tab-professional" data-translate="sidebar_professional"><i class="fa-solid fa-briefcase"></i> Professional & Talents</button>
+        <button class="sidebar-tab" data-tab="tab-vitality" data-translate="sidebar_vitality"><i class="fa-solid fa-heart-pulse"></i> Biological & Vitality</button>
+        <button class="sidebar-tab" data-tab="tab-cognitive" data-translate="sidebar_cognitive"><i class="fa-solid fa-brain"></i> Cognitive & Mind</button>
+        <button class="sidebar-tab" data-tab="tab-lifestyle" data-translate="sidebar_lifestyle"><i class="fa-solid fa-sliders"></i> Habits & Outlook</button>
+      </aside>
+
+      <!-- Center: Form Inputs -->
+      <section class="editor-form-canvas glass-panel">
+        
+        <!-- SECTION 1: IDENTITY -->
+        <div id="tab-identity" class="editor-form-section active">
+          <h3><i class="fa-solid fa-user-astronaut"></i> Personal Identity Record</h3>
+          <p class="form-section-desc">Core identity keys defining your physical avatar and coordinates.</p>
+          
+          <div class="form-grid">
+            <div class="form-field full-width">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="e.g. Elena Rostova" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field">
+              <label for="tagline">Title / Professional Tagline</label>
+              <input type="text" id="tagline" placeholder="e.g. Biosensor Engineer & Systems Architect" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field">
+              <label for="pronouns">Pronouns</label>
+              <input type="text" id="pronouns" placeholder="e.g. She / Her / Explorer" oninput="triggerFormChange()">
+            </div>
+
+            <div class="form-field full-width">
+              <label for="avatar">Avatar Image URL (or upload image below)</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="avatar" placeholder="https://images.unsplash.com/photo-... or custom base64" oninput="triggerFormChange()" style="flex: 1;">
+                <button type="button" class="btn btn-secondary" onclick="triggerAvatarUpload()"><i class="fa-solid fa-upload"></i> Upload</button>
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+              </div>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="bio">Personal Manifesto / Bio Statement</label>
+              <textarea id="bio" rows="4" placeholder="Describe who you are, what drives your research, and your overarching operational philosophy in a few sentences..." oninput="triggerFormChange()"></textarea>
+            </div>
+          </div>
+
+          <h4 class="sub-section-title"><i class="fa-solid fa-address-book"></i> Connect & Coordinates</h4>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+              <input type="email" id="email" placeholder="elena@aurora.io" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="phone"><i class="fa-solid fa-phone"></i> Contact Phone</label>
+              <input type="text" id="phone" placeholder="+1 (555) 019-2834" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="location"><i class="fa-solid fa-map-pin"></i> Operational Location</label>
+              <input type="text" id="location" placeholder="Geneva, Switzerland (Remote)" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="website"><i class="fa-solid fa-globe"></i> Website Domain</label>
+              <input type="text" id="website" placeholder="https://elena.codes" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field">
+              <label for="github"><i class="fa-brands fa-github"></i> GitHub</label>
+              <input type="text" id="github" placeholder="github.com/username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="linkedin"><i class="fa-brands fa-linkedin"></i> LinkedIn</label>
+              <input type="text" id="linkedin" placeholder="linkedin.com/in/username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="twitter"><i class="fa-brands fa-x-twitter"></i> Twitter/X</label>
+              <input type="text" id="twitter" placeholder="twitter.com/username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="medium"><i class="fa-brands fa-medium"></i> Medium</label>
+              <input type="text" id="medium" placeholder="medium.com/@username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="instagram"><i class="fa-brands fa-instagram"></i> Instagram</label>
+              <input type="text" id="instagram" placeholder="instagram.com/username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="facebook"><i class="fa-brands fa-facebook"></i> Facebook</label>
+              <input type="text" id="facebook" placeholder="facebook.com/username" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="youtube"><i class="fa-brands fa-youtube"></i> YouTube</label>
+              <input type="text" id="youtube" placeholder="youtube.com/channel" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="tiktok"><i class="fa-brands fa-tiktok"></i> TikTok</label>
+              <input type="text" id="tiktok" placeholder="tiktok.com/@username" oninput="triggerFormChange()">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: PROFESSIONAL -->
+        <div id="tab-professional" class="editor-form-section">
+          <h3><i class="fa-solid fa-briefcase"></i> Professional Milestones & Talents</h3>
+          <p class="form-section-desc">Record your skill index, career trajectory, credentials, and projects.</p>
+
+          <!-- Skills -->
+          <div class="input-card-group">
+            <div class="group-header-row">
+              <h4><i class="fa-solid fa-bolt"></i> Skills Matrix</h4>
+              <button class="btn btn-small" onclick="addSkillRow()"><i class="fa-solid fa-plus"></i> Add Skill</button>
+            </div>
+            <div id="skills-container" class="dynamic-list-rows">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Work Experience -->
+          <div class="input-card-group">
+            <div class="group-header-row">
+              <h4><i class="fa-solid fa-business-time"></i> Work Chronicles</h4>
+              <button class="btn btn-small" onclick="addWorkRow()"><i class="fa-solid fa-plus"></i> Add Job</button>
+            </div>
+            <div id="work-container" class="dynamic-list-rows">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="input-card-group">
+            <div class="group-header-row">
+              <h4><i class="fa-solid fa-graduation-cap"></i> Academic Credentials</h4>
+              <button class="btn btn-small" onclick="addEduRow()"><i class="fa-solid fa-plus"></i> Add Degree</button>
+            </div>
+            <div id="edu-container" class="dynamic-list-rows">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="input-card-group">
+            <div class="group-header-row">
+              <h4><i class="fa-solid fa-diagram-project"></i> Creations & Projects</h4>
+              <button class="btn btn-small" onclick="addProjectRow()"><i class="fa-solid fa-plus"></i> Add Project</button>
+            </div>
+            <div id="project-container" class="dynamic-list-rows">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Credentials upload -->
+          <div class="input-card-group">
+            <div class="group-header-row">
+              <h4><i class="fa-solid fa-paperclip"></i> Credentials Attachments <span class="tooltip-trigger" data-tooltip="attachments"><i class="fa-solid fa-circle-info"></i></span></h4>
+              <button class="btn btn-small" onclick="triggerAttachmentUpload()"><i class="fa-solid fa-upload"></i> Upload File</button>
+              <input type="file" id="attachment-upload" style="display: none;" onchange="handleAttachmentUpload(event)" multiple>
+            </div>
+            <div id="attachments-container" class="dynamic-list-rows">
+              <!-- Dynamically populated -->
+            </div>
+            <p class="helper-text-note"><i class="fa-solid fa-circle-exclamation"></i> Max file size: 1MB. Files are embedded directly in the profile.</p>
+          </div>
+        </div>
+
+        <!-- SECTION 3: VITALITY -->
+        <div id="tab-vitality" class="editor-form-section">
+          <h3><i class="fa-solid fa-heart-pulse"></i> Biological & Vitality Indicators</h3>
+          <p class="form-section-desc">Record core biometric parameters, nutrition styles, and sleep rhythms.</p>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="height">Height (cm)</label>
+              <input type="number" id="height" placeholder="e.g. 176" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="weight">Weight (kg)</label>
+              <input type="number" id="weight" placeholder="e.g. 68" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="blood-group">Blood Group</label>
+              <select id="blood-group" onchange="triggerFormChange()">
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="water-goal">Daily Hydration Goal (Liters)</label>
+              <input type="number" step="0.1" id="water-goal" placeholder="e.g. 3.0" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="diet-type">Diet / Nutrition Philosophy</label>
+              <input type="text" id="diet-type" placeholder="e.g. Vegetarian, Keto, Whole Foods" oninput="triggerFormChange()">
+            </div>
+
+            <div class="form-field">
+              <label for="eye-color">Eye Color</label>
+              <input type="text" id="eye-color" placeholder="e.g. Amber" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="hair-color">Hair Color</label>
+              <input type="text" id="hair-color" placeholder="e.g. Dark Auburn" oninput="triggerFormChange()">
+            </div>
+
+            <div class="form-field full-width">
+              <label for="allergies">Biological Sensitivities / Allergies</label>
+              <input type="text" id="allergies" placeholder="e.g. Peanuts, Penicillin, Pollen (comma separated)" oninput="triggerFormChange()">
+            </div>
+
+            <div class="form-field full-width">
+              <label for="medical-conditions">Daily Medications / Chronic Conditions</label>
+              <input type="text" id="medical-conditions" placeholder="e.g. Altitude Asthma" oninput="triggerFormChange()">
+            </div>
+          </div>
+
+          <h4 class="sub-section-title"><i class="fa-solid fa-person-running"></i> Fitness & Chronology Rhythms</h4>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="fitness-level">Fitness Status Rating (1 - 10)</label>
+              <div class="range-wrapper-input">
+                <input type="range" id="fitness-level" min="1" max="10" value="5" oninput="document.getElementById('fitness-val-display').innerText=this.value; triggerFormChange();">
+                <span id="fitness-val-display" class="range-value-label">5</span>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="activity-level">Operational Activity Load</label>
+              <select id="activity-level" onchange="triggerFormChange()">
+                <option value="sedentary">Sedentary (Rare exercise)</option>
+                <option value="light">Lightly Active (1-2 days/week)</option>
+                <option value="active" selected>Active (3-5 days/week)</option>
+                <option value="athlete">Athlete / Intensive output</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="sleep-rhythm">Sleep Chronotype Rhythms <span class="tooltip-trigger" data-tooltip="sleep-rhythm"><i class="fa-solid fa-circle-info"></i></span></label>
+              <select id="sleep-rhythm" onchange="triggerFormChange()">
+                <option value="lion">Lion (Early morning peaks)</option>
+                <option value="bear" selected>Bear (Mid-day solar peaks)</option>
+                <option value="wolf">Wolf (Nocturnal focus peaks)</option>
+                <option value="dolphin">Dolphin (Light sleeping / irregular)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: COGNITIVE -->
+        <div id="tab-cognitive" class="editor-form-section">
+          <h3><i class="fa-solid fa-brain"></i> Cognitive & Psychological Blueprints</h3>
+          <p class="form-section-desc">Record personality factors, values, and psychological coping blueprints.</p>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="mbti">MBTI Personality Model <span class="tooltip-trigger" data-tooltip="mbti"><i class="fa-solid fa-circle-info"></i></span></label>
+              <select id="mbti" onchange="triggerFormChange()">
+                <option value="">Select MBTI</option>
+                <option value="INTJ">INTJ (Architect)</option>
+                <option value="INTP">INTP (Logician)</option>
+                <option value="ENTJ">ENTJ (Commander)</option>
+                <option value="ENTP">ENTP (Debater)</option>
+                <option value="INFJ">INFJ (Advocate)</option>
+                <option value="INFP">INFP (Mediator)</option>
+                <option value="ENFJ">ENFJ (Protagonist)</option>
+                <option value="ENFP">ENFP (Campaigner)</option>
+                <option value="ISTJ">ISTJ (Logistician)</option>
+                <option value="ISFJ">ISFJ (Defender)</option>
+                <option value="ESTJ">ESTJ (Executive)</option>
+                <option value="ESFJ">ESFJ (Consul)</option>
+                <option value="ISTP">ISTP (Virtuoso)</option>
+                <option value="ISFP">ISFP (Adventurer)</option>
+                <option value="ESTP">ESTP (Entrepreneur)</option>
+                <option value="ESFP">ESFP (Entertainer)</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="enneagram">Enneagram Model <span class="tooltip-trigger" data-tooltip="enneagram"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="enneagram" placeholder="e.g. Type 5 (The Investigator) or 5w6" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="zodiac">Astronomical Zodiac Sign <span class="tooltip-trigger" data-tooltip="zodiac"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="zodiac" placeholder="e.g. Scorpio" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field">
+              <label for="learning-style">Cognitive Learning Method <span class="tooltip-trigger" data-tooltip="learning-style"><i class="fa-solid fa-circle-info"></i></span></label>
+              <select id="learning-style" onchange="triggerFormChange()">
+                <option value="visual">Visual (Spatial graphs)</option>
+                <option value="auditory">Auditory (Lectures, discussion)</option>
+                <option value="readwrite" selected>Read & Write (Text, charts)</option>
+                <option value="kinesthetic">Kinesthetic (Practical / Hands-on)</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="core-values">Core Principles & Values (comma separated) <span class="tooltip-trigger" data-tooltip="core-values"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="core-values" placeholder="e.g. Autonomy, Curiosity, Integrity" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="strengths">Psychological Strengths (comma separated) <span class="tooltip-trigger" data-tooltip="strengths"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="strengths" placeholder="e.g. Systems Architecture, Logic Synthesis" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="growth-areas">Areas of Growth / Weaknesses (comma separated) <span class="tooltip-trigger" data-tooltip="growth-areas"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="growth-areas" placeholder="e.g. Over-engineering, Task Delegation" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="curiosities">Intellectual Obsessions (comma separated) <span class="tooltip-trigger" data-tooltip="curiosities"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="curiosities" placeholder="e.g. Quantum Computing, Mycological Networks" oninput="triggerFormChange()">
+            </div>
+
+            <div class="form-field full-width">
+              <label for="stress-coping">Stress Reset Mechanisms <span class="tooltip-trigger" data-tooltip="stress-coping"><i class="fa-solid fa-circle-info"></i></span></label>
+              <input type="text" id="stress-coping" placeholder="e.g. Long bouldering sessions, tea ceremonies" oninput="triggerFormChange()">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: LIFESTYLE -->
+        <div id="tab-lifestyle" class="editor-form-section">
+          <h3><i class="fa-solid fa-sliders"></i> Lifestyle, Habits & Outlook</h3>
+          <p class="form-section-desc">Record daily operational routines, mottos, and travel philosophies.</p>
+
+          <div class="form-grid">
+            <div class="form-field full-width">
+              <label for="life-motto">Life Philosophy / Motto / Favorite Quote <span class="tooltip-trigger" data-tooltip="life-motto"><i class="fa-solid fa-circle-info"></i></span></label>
+              <textarea id="life-motto" rows="2" placeholder="e.g. 'The unexamined life is not worth living.' - Socrates" oninput="triggerFormChange()"></textarea>
+            </div>
+            <div class="form-field full-width">
+              <label for="hobbies">Passions & Hobbies (comma separated)</label>
+              <input type="text" id="hobbies" placeholder="e.g. Bouldering, Astro-photography, Modular Synths" oninput="triggerFormChange()">
+            </div>
+            <div class="form-field full-width">
+              <label for="travel-style">Travel Philosophy & Dream Coordinates</label>
+              <input type="text" id="travel-style" placeholder="e.g. Coastal field sites, alpine hikes, historic libraries" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field">
+              <label for="work-environment">Ideal Work Environment</label>
+              <select id="work-environment" onchange="triggerFormChange()">
+                <option value="remote" selected>100% Remote / Asynchronous</option>
+                <option value="hybrid">Hybrid (Co-working & Deep Focus)</option>
+                <option value="office">Collaborative Hub / Office Sync</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="social-battery">Social Battery / Focus Style</label>
+              <select id="social-battery" onchange="triggerFormChange()">
+                <option value="solitary">Solitary Focus (Quiet slots needed)</option>
+                <option value="balanced" selected>Balanced Hybrid (Sync + Async mix)</option>
+                <option value="outgoing">High-Energy Sync (Brainstorms & syncs)</option>
+              </select>
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="daily-routine">Typical Daily Rhythm Blocks <span class="tooltip-trigger" data-tooltip="daily-routine"><i class="fa-solid fa-circle-info"></i></span></label>
+              <textarea id="daily-routine" rows="4" placeholder="e.g. 06:00 Hydration & stretches | 07:30 Math analysis study | 09:00 Deep firmware development..." oninput="triggerFormChange()"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Panel: Slide-out Live Preview Drawer -->
+      <aside class="editor-preview-drawer glass-panel" id="preview-drawer">
+        <header class="drawer-header">
+          <h3><i class="fa-solid fa-tv"></i> Real-time Dossier Visualizer</h3>
+          <button class="btn btn-secondary btn-small" onclick="togglePreviewDrawer()">&times;</button>
+        </header>
+        <div class="drawer-body">
+          <div id="drawer-preview-card" class="dossier-card-micro">
+            <!-- Render micro dossier card representing real-time changes -->
+            <div class="micro-header">
+              <img id="micro-avatar" src="" alt="Avatar">
+              <div>
+                <h4 id="micro-name">...</h4>
+                <p id="micro-tagline">...</p>
+              </div>
+            </div>
+            <div class="micro-stats">
+              <div class="stat"><span class="lbl">Skills:</span> <span id="micro-stat-skills" class="val">0</span></div>
+              <div class="stat"><span class="lbl">Projects:</span> <span id="micro-stat-projects" class="val">0</span></div>
+            </div>
+            <div class="micro-mbti">
+              <span class="lbl">MBTI Type:</span> <span id="micro-mbti-code" class="val">...</span>
+            </div>
+            <p id="micro-bio" class="micro-bio">...</p>
+          </div>
+          <div class="drawer-notice">
+            <p><i class="fa-solid fa-info-circle"></i> This visualizer provides a real-time summary. Open the <a href="dashboard.html" target="_blank">Dashboard Page</a> to view full interactive metrics.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Floating Help Drawer -->
+  <button class="help-box-btn" onclick="document.getElementById('help-drawer').classList.add('active')" aria-label="Open Help Drawer">
+    <i class="fa-solid fa-circle-question"></i>
+  </button>
+  
+  <div id="help-drawer" class="help-drawer-overlay">
+    <header class="help-drawer-header">
+      <h3 data-translate="help_title">Aura Help Drawer</h3>
+      <button class="help-drawer-close" onclick="document.getElementById('help-drawer').classList.remove('active')">&times;</button>
+    </header>
+    <div class="help-drawer-body">
+      <p data-translate="help_p1">Welcome to Aura, your human dossier database system.</p>
+      <p data-translate="help_p2">Use the Compiler page to create or update dossier files. The Dashboard presents interactive charts. Toggle theme styles in Settings.</p>
+      <p data-translate="help_p3">To print specific sections, click Print on the Dashboard and select only the items you want. Aura automatically synchronizes with the permanent SQLite backend.</p>
+    </div>
+  </div>
+
+  <!-- Tooltip overlay -->
+  <div id="tooltip-container" class="tooltip-container"></div>
+
+  <!-- DB scripts and editor controller -->
+  <script src="js/database.js"></script>
+  <script src="js/translation.js"></script>
+  <script src="js/editor.js"></script>
+</body>
+</html>

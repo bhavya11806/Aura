@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA // Settings & Control Room</title>
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="logo-area" onclick="location.href='index.html'">
+      <div class="logo-icon"><i class="fa-solid fa-dna"></i></div>
+      <div class="logo-text">
+        <span class="logo-main">AURA</span>
+        <span class="logo-sub">Personnel Database</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-home"></i> Portal</a>
+      <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+      <a href="editor.html" class="nav-item"><i class="fa-solid fa-user-pen"></i> Compiler</a>
+      <a href="settings.html" class="nav-item active"><i class="fa-solid fa-gears"></i> Settings</a>
+    </nav>
+    <div class="active-profile-badge" id="active-profile-badge" style="display: none;">
+      <img id="header-avatar" src="" alt="Avatar">
+      <div class="badge-text">
+        <span id="header-profile-name" class="profile-name">...</span>
+        <span class="status-indicator"><span class="dot"></span> Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Settings Container -->
+  <main class="settings-viewport">
+    <h1 class="settings-title"><i class="fa-solid fa-sliders"></i> System Settings & Control Room</h1>
+    
+    <div class="settings-grid">
+      <!-- Left Column: Theme, Accounts, JSON Actions -->
+      <div class="settings-col-main">
+        <!-- Theme Switcher -->
+        <section class="glass-card settings-card">
+          <h3><i class="fa-solid fa-palette"></i> Interface Theme Preset</h3>
+          <p class="section-desc">Select a visual theme configuration to apply styling parameters across all dossiers.</p>
+          <div class="theme-select-grid">
+            <div class="theme-option-card aurora active" onclick="updateThemeOption('aurora')">
+              <div class="theme-preview">
+                <span class="dot primary"></span><span class="dot secondary"></span><span class="dot tertiary"></span>
+              </div>
+              <h4>Aurora Dark</h4>
+              <p>Cosmic violet neon aesthetics</p>
+            </div>
+            <div class="theme-option-card cyberpunk" onclick="updateThemeOption('cyberpunk')">
+              <div class="theme-preview">
+                <span class="dot primary"></span><span class="dot secondary"></span><span class="dot tertiary"></span>
+              </div>
+              <h4>Cyberpunk Grid</h4>
+              <p>Neon yellow-teal grid terminals</p>
+            </div>
+            <div class="theme-option-card oceanic" onclick="updateThemeOption('oceanic')">
+              <div class="theme-preview">
+                <span class="dot primary"></span><span class="dot secondary"></span><span class="dot tertiary"></span>
+              </div>
+              <h4>Oceanic Breeze</h4>
+              <p>Deep marine blues & teals</p>
+            </div>
+            <div class="theme-option-card zen" onclick="updateThemeOption('zen')">
+              <div class="theme-preview">
+                <span class="dot primary"></span><span class="dot secondary"></span><span class="dot tertiary"></span>
+              </div>
+              <h4>Zen Garden</h4>
+              <p>Light minimalist organic earth</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Accounts & Session Management -->
+        <section class="glass-card settings-card">
+          <h3><i class="fa-solid fa-user-shield"></i> Operator Account & Session</h3>
+          <p class="section-desc">Authenticate operator profiles to isolate custom dossier collections.</p>
+          
+          <div class="operator-session-box" id="operator-info-box">
+            <!-- Dynamically rendered active operator -->
+          </div>
+
+          <!-- Auth forms stacked -->
+          <div class="auth-box-wrapper" id="auth-box-wrapper">
+            <div class="auth-toggle-headers">
+              <button id="tab-btn-login" class="auth-header-btn active" onclick="toggleAuthPanel('login')">Operator Login</button>
+              <button id="tab-btn-register" class="auth-header-btn" onclick="toggleAuthPanel('register')">Register Operator</button>
+            </div>
+            
+            <form id="form-login" onsubmit="handleOperatorLogin(event)" class="auth-form-panel active">
+              <div class="form-field-mini">
+                <label>Operator Username</label>
+                <input type="text" id="login-username" required placeholder="Enter operator name...">
+              </div>
+              <div class="form-field-mini">
+                <label>Access Password</label>
+                <input type="password" id="login-password" required placeholder="Enter credentials code...">
+              </div>
+              <div id="login-error" class="auth-error-notice" style="display: none;"></div>
+              <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;"><i class="fa-solid fa-right-to-bracket"></i> Authenticate Session</button>
+            </form>
+
+            <form id="form-register" onsubmit="handleOperatorRegister(event)" class="auth-form-panel">
+              <div class="form-field-mini">
+                <label>New Operator Name</label>
+                <input type="text" id="register-username" required placeholder="Enter username...">
+              </div>
+              <div class="form-field-mini">
+                <label>Set Access Password</label>
+                <input type="password" id="register-password" required placeholder="Min 4 characters...">
+              </div>
+              <div id="register-error" class="auth-error-notice" style="display: none;"></div>
+              <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;"><i class="fa-solid fa-user-plus"></i> Initialize Operator Key</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- JSON backup -->
+        <section class="glass-card settings-card">
+          <h3><i class="fa-solid fa-database"></i> JSON Dossier Backups</h3>
+          <p class="section-desc">Export current dossiers to localized JSON files or restore previous archives.</p>
+          <div class="backup-actions">
+            <button class="btn btn-secondary" onclick="exportJSONDossier()"><i class="fa-solid fa-file-export"></i> Export JSON Archive</button>
+            <button class="btn btn-secondary" onclick="triggerImportClick()"><i class="fa-solid fa-file-import"></i> Import JSON Archive</button>
+            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importJSONDossier(event)">
+            <button class="btn btn-danger" onclick="triggerPurgeModal()"><i class="fa-solid fa-triangle-exclamation"></i> Purge All Records</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Database Console logs -->
+      <div class="settings-col-side">
+        <!-- Database metrics panel -->
+        <section class="glass-card db-stats-card">
+          <h3><i class="fa-solid fa-server"></i> Active Database Status</h3>
+          <div class="db-metrics-list">
+            <div class="metric-row-status">
+              <span>IndexedDB Connection:</span>
+              <span id="db-status-badge" class="badge-status-online">Online</span>
+            </div>
+            <div class="metric-row-data">
+              <span>Active Profiles:</span>
+              <span id="db-stat-profiles" class="val">0</span>
+            </div>
+            <div class="metric-row-data">
+              <span>Registered Accounts:</span>
+              <span id="db-stat-accounts" class="val">0</span>
+            </div>
+            <div class="metric-row-data">
+              <span>Database Size:</span>
+              <span id="db-stat-size" class="val">~5.4 KB</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Live Database Audit Terminal -->
+        <section class="glass-card terminal-card">
+          <div class="terminal-header-row">
+            <h3><i class="fa-solid fa-terminal"></i> Database Transaction logs</h3>
+            <button class="btn btn-small" onclick="clearDatabaseLogs()"><i class="fa-solid fa-trash-can"></i> Clear logs</button>
+          </div>
+          <p class="section-desc">Audit logs detailing transaction history of the local database stores.</p>
+          
+          <div class="console-terminal-wrapper">
+            <div class="terminal-banner">AURA DB CONSOLE LOG [Version 1.0]</div>
+            <div id="db-terminal-output" class="terminal-output">
+              <!-- Logs populated dynamically -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- PURGE CONFIRM MODAL -->
+  <div id="modal-purge" class="modal-overlay">
+    <div class="modal-card">
+      <header class="modal-header">
+        <h3><i class="fa-solid fa-triangle-exclamation"></i> Purge / Reset Records</h3>
+        <button class="modal-close" onclick="closeModal('modal-purge')">&times;</button>
+      </header>
+      <div class="modal-body">
+        <p>You are about to purge or reset the local personnel databases. Please choose an action:</p>
+        <div class="modal-buttons-stacked" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn btn-danger" onclick="executeDatabasePurge()"><i class="fa-solid fa-trash-can"></i> Purge All Profiles (Wipe Blank)</button>
+          <button class="btn btn-secondary" onclick="executeDatabaseReset()"><i class="fa-solid fa-database"></i> Reset to Default seeded profiles</button>
+          <button class="btn btn-secondary" onclick="closeModal('modal-purge')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DB scripts and settings controller -->
+  <script src="js/database.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aura-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aura - Personal and professional human dossier personnel database. Manage digital profiles, cognitive metrics, and biometrics.">
+  <title>Aura // human dossier</title>
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="logo-area" onclick="location.href='index.html'">
+      <div class="logo-icon"><i class="fa-solid fa-dna"></i></div>
+      <div class="logo-text">
+        <span class="logo-main" data-translate="logo_main">Aura</span>
+        <span class="logo-sub" data-translate="logo_sub">human dossier</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-item active" data-translate="nav_portal"><i class="fa-solid fa-home"></i> Portal</a>
+      <a href="dashboard.html" class="nav-item" data-translate="nav_dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+      <a href="editor.html" class="nav-item" data-translate="nav_compiler"><i class="fa-solid fa-user-pen"></i> Compiler</a>
+      <a href="settings.html" class="nav-item" data-translate="nav_settings"><i class="fa-solid fa-gears"></i> Settings</a>
+    </nav>
+
+    <!-- Language Selector Dropdown -->
+    <div class="header-lang-wrapper">
+      <i class="fa-solid fa-globe"></i>
+      <select id="header-language-select" class="header-lang-select">
+        <option value="en">EN</option>
+        <option value="hi">HI</option>
+        <option value="es">ES</option>
+      </select>
+    </div>
+
+    <div class="active-profile-badge" id="active-profile-badge" style="display: none;">
+      <img id="header-avatar" src="" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256'">
+      <div class="badge-text">
+        <span id="header-profile-name" class="profile-name">...</span>
+        <span class="status-indicator"><span class="dot"></span> Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Portal Container -->
+  <main class="portal-container">
+    <div class="portal-glow-effect"></div>
+    
+    <!-- Welcome Header -->
+    <section class="portal-header">
+      <h1 class="animate-fade-in" data-translate="portal_h1">Digital Identity Dossier</h1>
+      <p class="animate-fade-in-delayed" data-translate="portal_p">Select an avatar dossier to analyze, compile, and visualize comprehensive records.</p>
+    </section>
+
+    <!-- Active Profile Spotlight Card -->
+    <section class="spotlight-section animate-fade-in-delayed">
+      <div class="spotlight-card glass-panel">
+        <div class="spotlight-content">
+          <div class="avatar-wrapper">
+            <img id="spotlight-avatar" src="" alt="Dossier Avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256'">
+            <div class="pulse-ring"></div>
+          </div>
+          <div class="profile-summary">
+            <div class="meta-row">
+              <span class="classification-tag"><i class="fa-solid fa-shield-halved"></i> <span data-translate="classification_tag">Active Dossier</span></span>
+              <span id="spotlight-pronouns" class="pronouns-badge">...</span>
+            </div>
+            <h2 id="spotlight-name">...</h2>
+            <p id="spotlight-tagline" class="tagline">...</p>
+            <p id="spotlight-bio" class="bio">...</p>
+            <div class="coordinates-grid">
+              <span id="spotlight-location"><i class="fa-solid fa-map-pin"></i> <span>...</span></span>
+              <span id="spotlight-email"><i class="fa-solid fa-envelope"></i> <span>...</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="spotlight-stats">
+          <div class="stat-box">
+            <span class="label">Skills Matrix</span>
+            <span id="stat-skills" class="value">0</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-box">
+            <span class="label">Creations</span>
+            <span id="stat-projects" class="value">0</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-box">
+            <span class="label">MBTI Type</span>
+            <span id="stat-mbti" class="value">N/A</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portal Action Grid -->
+    <section class="portal-grid animate-fade-in-delayed">
+      <div class="portal-action-card glass-panel hover-grow" onclick="location.href='dashboard.html'">
+        <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3 data-translate="grid_dashboard_title">Interactive Dashboard</h3>
+        <p data-translate="grid_dashboard_p">Explore professional, vital, and cognitive dimensions with interactive dashboards.</p>
+        <span class="action-link"><span data-translate="grid_dashboard_link">Open Dashboard</span> <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      
+      <div class="portal-action-card glass-panel hover-grow" onclick="location.href='editor.html'">
+        <div class="card-icon"><i class="fa-solid fa-user-pen"></i></div>
+        <h3 data-translate="grid_compiler_title">Dossier Compiler</h3>
+        <p data-translate="grid_compiler_p">Spaciously update career milestones, biometric indices, and cognitive profiles.</p>
+        <span class="action-link"><span data-translate="grid_compiler_link">Launch Compiler</span> <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      
+      <div class="portal-action-card glass-panel hover-grow" onclick="location.href='settings.html'">
+        <div class="card-icon"><i class="fa-solid fa-sliders"></i></div>
+        <h3 data-translate="grid_settings_title">Control Room</h3>
+        <p data-translate="grid_settings_p">Manage multiple profiles, select theme profiles, and observe database metrics.</p>
+        <span class="action-link"><span data-translate="grid_settings_link">Open Settings</span> <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Database Stamp Footer -->
+  <footer class="portal-footer">
+    <div class="db-status-bar">
+      <span><i class="fa-solid fa-server"></i> <span data-translate="db_label">Database:</span> <strong id="db-status" class="online">INITIALIZING...</strong></span>
+      <span class="separator">//</span>
+      <span><i class="fa-solid fa-database"></i> <span data-translate="profiles_label">Profiles:</span> <strong id="profile-count">0</strong></span>
+      <span class="separator">//</span>
+      <span><i class="fa-solid fa-user"></i> <span data-translate="session_label">Session:</span> <strong id="operator-session">Guest</strong></span>
+    </div>
+  </footer>
+
+  <!-- Floating Help Drawer -->
+  <button class="help-box-btn" onclick="document.getElementById('help-drawer').classList.add('active')" aria-label="Open Help Drawer">
+    <i class="fa-solid fa-circle-question"></i>
+  </button>
+  
+  <div id="help-drawer" class="help-drawer-overlay">
+    <header class="help-drawer-header">
+      <h3 data-translate="help_title">Aura Help Drawer</h3>
+      <button class="help-drawer-close" onclick="document.getElementById('help-drawer').classList.remove('active')">&times;</button>
+    </header>
+    <div class="help-drawer-body">
+      <p data-translate="help_p1">Welcome to Aura, your human dossier database system.</p>
+      <p data-translate="help_p2">Use the Compiler page to create or update dossier files. The Dashboard presents interactive charts. Toggle theme styles in Settings.</p>
+      <p data-translate="help_p3">To print specific sections, click Print on the Dashboard and select only the items you want. Aura automatically synchronizes with the permanent SQLite backend.</p>
+    </div>
+  </div>
+
+  <!-- DB scripts and portal control -->
+  <script src="js/database.js"></script>
+  <script src="js/translation.js"></script>
+  <script src="js/portal.js"></script>
+</body>
+</html>
