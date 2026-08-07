@@ -62,6 +62,10 @@ const SEED_PROFILES = [
       workEnvironment: "remote",
       socialBattery: "solitary",
       dailyRoutine: "08:00 Synthesis & Aerobic warmup | 09:00 Deep telemetry architecture block | 13:00 Laboratory sensor tests | 16:00 Async project review | 18:00 Synth patching & bouldering | 21:00 Research read on mycological computing.",
+      passion: "Building carbon-silicon symbiotic computing interfaces and space habitats",
+      targetJob: "Principal Symbiosis Systems Engineer",
+      targetIndustries: "Biotechnology, Aerospace, Environmental Robotics",
+      aiWorkPreference: "collaborative",
       
       skills: [
         { name: "Biosensor Hardware Design", level: 95, category: "technical" },
@@ -141,6 +145,10 @@ const SEED_PROFILES = [
       workEnvironment: "hybrid",
       socialBattery: "solitary",
       dailyRoutine: "05:00 Running & Stretching | 06:30 Tea & Math research study | 08:30 Compiler build verification | 13:00 Quantum processor calibration sync | 16:00 Solitary code synthesis | 19:00 Board game review & wood craft.",
+      passion: "Mapping mathematical abstractions to physical realities and playing grandmaster chess",
+      targetJob: "Quantum Compiler & Superconducting Logic Designer",
+      targetIndustries: "Quantum Computing, Cryptography, High Performance Compute",
+      aiWorkPreference: "resistant",
       
       skills: [
         { name: "Quantum Logic Synthesis", level: 98, category: "technical" },
@@ -220,6 +228,10 @@ const SEED_PROFILES = [
       workEnvironment: "office",
       socialBattery: "balanced",
       dailyRoutine: "06:30 Yoga & hydration | 07:30 Review sensor telemetry data sheets | 09:30 Boat launch and reef field monitoring | 14:00 Lab data entry & biosphere modelling | 17:00 Scientific paper draft review | 19:30 Dive gear prep & Sketch-book entry.",
+      passion: "Saving deep marine coral structures and photographing underwater biosystems",
+      targetJob: "Marine Biosphere Restoration Director",
+      targetIndustries: "Marine Conservation, Environmental Telemetry, IoT Science",
+      aiWorkPreference: "pure-human",
       
       skills: [
         { name: "Field Sensor Deployment", level: 96, category: "technical" },

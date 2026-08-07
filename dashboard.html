@@ -67,6 +67,7 @@
       <button class="dash-tab active" data-dashboard="professional" data-translate="tab_cv"><i class="fa-solid fa-briefcase"></i> Professional CV</button>
       <button class="dash-tab" data-dashboard="vitality" data-translate="tab_vitality"><i class="fa-solid fa-heart-pulse"></i> Vitality Index</button>
       <button class="dash-tab" data-dashboard="cognitive" data-translate="tab_cognitive"><i class="fa-solid fa-brain"></i> Cognitive Profile</button>
+      <button class="dash-tab" data-dashboard="career" data-translate="tab_career"><i class="fa-solid fa-compass"></i> Career Compass</button>
     </div>
 
     <!-- 1. PROFESSIONAL CV DASHBOARD -->
@@ -402,6 +403,120 @@
         </div>
       </div>
     </section>
+
+    <!-- 4. AI CAREER COMPASS & JOB SUGGESTION ENGINE -->
+    <section id="dash-career" class="dashboard-section">
+      <div class="career-grid">
+        
+        <!-- Row 1: Passion Alignment & Strengths/Weaknesses -->
+        <div class="career-row-top">
+          <!-- Passion-to-Profession Alignment Card -->
+          <div class="glass-card career-alignment-card">
+            <h3 data-translate="sidebar_career"><i class="fa-solid fa-compass"></i> Career Compass</h3>
+            <p class="section-desc">Analyzing the overlap between your passion and your current professional capabilities.</p>
+            
+            <div class="alignment-display">
+              <div class="alignment-gauge">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" class="gauge-bg"></circle>
+                  <circle cx="50" cy="50" r="40" class="gauge-fill" id="alignment-gauge-fill" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+                  <text x="50" y="55" class="gauge-text" id="alignment-score-text">0%</text>
+                </svg>
+              </div>
+              <div class="alignment-details">
+                <h4 id="alignment-status-title">Evaluating alignment...</h4>
+                <p id="alignment-explanation-text">Please ensure passion, skills, and target job are defined in your dossier compiler.</p>
+              </div>
+            </div>
+
+            <div class="passion-summary-block">
+              <h5>Logged Passion:</h5>
+              <p id="dashboard-passion-display">...</p>
+              <h5 style="margin-top: 10px;">Target Profession:</h5>
+              <p id="dashboard-target-job-display">...</p>
+            </div>
+          </div>
+
+          <!-- Strengths & Weaknesses Evaluation Card -->
+          <div class="glass-card career-strengths-card">
+            <h3><i class="fa-solid fa-scale-balanced"></i> Persona Vector Analysis</h3>
+            <p class="section-desc">Identified core assets and developmental vulnerabilities impacting career suitability.</p>
+            
+            <div class="vectors-split">
+              <div class="vector-box strengths">
+                <h4><i class="fa-solid fa-circle-check" style="color: var(--accent-secondary);"></i> Core Strengths</h4>
+                <ul id="career-strengths-list" class="vector-list">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+              <div class="vector-box weaknesses">
+                <h4><i class="fa-solid fa-circle-xmark" style="color: var(--accent-tertiary);"></i> Areas of Growth</h4>
+                <ul id="career-weaknesses-list" class="vector-list">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+            </div>
+            
+            <div class="alignment-tip-banner" id="career-advice-banner">
+              <!-- Dynamically populated advice -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: AI Job Suggestions & Skill Roadmap -->
+        <div class="career-row-mid">
+          <!-- Job Match suggestions -->
+          <div class="glass-card job-suggestions-card">
+            <h3><i class="fa-solid fa-robot"></i> AI-Resistant Job Suggestions</h3>
+            <p class="section-desc">Secure career roles matched to your skillset, cognitive MBTI type, and AI work preferences.</p>
+            <div class="jobs-list-grid" id="jobs-suggestion-container">
+              <!-- Job matches populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Roadmap for Leveling Up Skills -->
+          <div class="glass-card skills-roadmap-card">
+            <h3><i class="fa-solid fa-road"></i> Skill Level-Up Roadmap</h3>
+            <p class="section-desc">Actionable steps to enhance your capabilities, bridge passion gaps, and insulate against automation.</p>
+            <div class="roadmap-stepper" id="skills-roadmap-container">
+              <!-- Step items populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: AURA AI Career Helper Chat Console -->
+        <div class="career-row-bottom">
+          <div class="glass-card ai-helper-chat-card full-width">
+            <div class="chat-header">
+              <div class="helper-info">
+                <div class="helper-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+                <div>
+                  <h3>Aura Career AI Assistant</h3>
+                  <span class="status"><span class="dot active"></span> Active Analysis Server</span>
+                </div>
+              </div>
+              <div class="chat-actions">
+                <button class="btn btn-secondary btn-small" onclick="triggerAIConsultation('resume')"><i class="fa-solid fa-magic"></i> Evaluate Resume</button>
+                <button class="btn btn-secondary btn-small" onclick="triggerAIConsultation('passion')"><i class="fa-solid fa-dna"></i> Passion-Profession Bridge</button>
+                <button class="btn btn-secondary btn-small" onclick="triggerAIConsultation('interview')"><i class="fa-solid fa-microphone"></i> Mock Interview Prep</button>
+              </div>
+            </div>
+            
+            <div class="chat-body" id="chat-messages-container">
+              <div class="chat-msg system-msg">
+                <p>Hello! I am Aura's Career Intelligence Agent. How can I help you refine your resume or plan your next career leap today? You can select one of the quick evaluations above or type your question below.</p>
+              </div>
+            </div>
+            
+            <form class="chat-input-bar" onsubmit="handleAIChatSubmit(event)">
+              <input type="text" id="chat-user-input" placeholder="Ask about job matching, resume improvements, interview tips..." autocomplete="off">
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
   </main>
 
   <!-- PRINT OPTIONS MODAL -->
@@ -412,28 +527,56 @@
         <button class="modal-close" onclick="closeModal('modal-pdf')">&times;</button>
       </header>
       <div class="modal-body">
-        <p style="margin-bottom: 15px; font-size:14px; opacity:0.8;">Choose print layout settings to generate your document. The output will adapt cleanly to standard print pages.</p>
+        <p style="margin-bottom: 15px; font-size:14px; opacity:0.8;">Select the output format and layout settings to generate your print/PDF files.</p>
         
         <div class="pdf-options" style="margin-bottom: 20px; padding: 15px; background: var(--input-bg); border-radius: 6px; border: 1px solid var(--glass-border); display:flex; flex-direction:column; gap:12px;">
-          <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 5px;">Select items to print:</h4>
-          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="print-opt-personal" checked>
-            <span>Personal Profile & Coordinates</span>
-          </label>
-          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="print-opt-professional" checked>
-            <span>Professional CV (Chronicle, Skills, Creations)</span>
-          </label>
-          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="print-opt-vitality" checked>
-            <span>Vitality & Biological Index</span>
-          </label>
-          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="print-opt-cognitive" checked>
-            <span>Cognitive & Psychological Blueprint</span>
-          </label>
+          <!-- Document Type Selection -->
+          <div class="form-field-mini" style="display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-weight: 700; font-size: 13px;">Document Type</label>
+            <select id="pdf-document-type" style="padding: 8px; border-radius: 4px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-main);" onchange="togglePrintTypeOptions(this.value)">
+              <option value="resume" selected>Professional CV / Resume</option>
+              <option value="report">AI Career Assessment Report</option>
+              <option value="dossier">Full Digital Dossier (All parameters)</option>
+            </select>
+          </div>
+
+          <!-- Resume Layout Customizations (Visible only for resume) -->
+          <div id="resume-layout-options-container" class="form-field-mini" style="display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-weight: 700; font-size: 13px;">Resume Template Style</label>
+            <select id="pdf-resume-layout" style="padding: 8px; border-radius: 4px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-main);">
+              <option value="classic" selected>Classic Corporate (Clean & Traditional)</option>
+              <option value="creative">Modern Creative (Polished Columns & Color Accent)</option>
+              <option value="tech">Cyberpunk Tech (Digital Matrix Console Aesthetics)</option>
+            </select>
+          </div>
+
+          <div id="dossier-items-selection" style="display: none; flex-direction: column; gap: 8px; border-top: 1px solid var(--glass-border); padding-top: 8px;">
+            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 2px;">Include Dossier Chapters:</h4>
+            <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+              <input type="checkbox" id="print-opt-personal" checked>
+              <span>Personal Identity & Coordinates</span>
+            </label>
+            <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+              <input type="checkbox" id="print-opt-professional" checked>
+              <span>Professional CV (Chronicle, Skills, Creations)</span>
+            </label>
+            <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+              <input type="checkbox" id="print-opt-vitality" checked>
+              <span>Vitality & Biological Index</span>
+            </label>
+            <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+              <input type="checkbox" id="print-opt-cognitive" checked>
+              <span>Cognitive & Psychological Blueprint</span>
+            </label>
+            <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+              <input type="checkbox" id="print-opt-career" checked>
+              <span>AI Career Compass & Roadmap</span>
+            </label>
+          </div>
+          
           <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 5px 0;">
-          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          
+          <label class="selection-item" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
             <input type="checkbox" id="pdf-opt-monochrome">
             <span>High-contrast monochrome print (Ink Saver)</span>
           </label>

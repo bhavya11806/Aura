@@ -453,6 +453,9 @@ function renderDashboard(data) {
   } else {
     routineBox.style.display = "none";
   }
+
+  // Render Career Compass metrics
+  renderCareerCompass(data);
 }
 
 // Helpers
@@ -532,48 +535,59 @@ function openPDFModal() {
   openModal("modal-pdf");
 }
 
+function togglePrintTypeOptions(type) {
+  const layoutContainer = document.getElementById("resume-layout-options-container");
+  const checklistContainer = document.getElementById("dossier-items-selection");
+  if (type === "resume") {
+    if (layoutContainer) layoutContainer.style.display = "flex";
+    if (checklistContainer) checklistContainer.style.display = "none";
+  } else if (type === "report") {
+    if (layoutContainer) layoutContainer.style.display = "none";
+    if (checklistContainer) checklistContainer.style.display = "none";
+  } else { // dossier
+    if (layoutContainer) layoutContainer.style.display = "none";
+    if (checklistContainer) checklistContainer.style.display = "flex";
+  }
+}
+
 function executePDFPrint() {
+  const docType = document.getElementById("pdf-document-type").value;
+  const layout = document.getElementById("pdf-resume-layout").value;
   const isMonochrome = document.getElementById("pdf-opt-monochrome").checked;
-  const printPersonal = document.getElementById("print-opt-personal").checked;
-  const printProfessional = document.getElementById("print-opt-professional").checked;
-  const printVitality = document.getElementById("print-opt-vitality").checked;
-  const printCognitive = document.getElementById("print-opt-cognitive").checked;
+
+  // Clean up any existing print classes first
+  document.body.className = document.body.className.replace(/\bprint-\S+/g, "").trim();
 
   if (isMonochrome) {
     document.body.classList.add("print-monochrome");
-  } else {
-    document.body.classList.remove("print-monochrome");
   }
 
-  // Force all dashboards display during print so selective hiding handles sections
-  document.body.classList.add("print-all-dashboards");
+  // Force print classes based on type
+  document.body.classList.add("print-active");
+  document.body.classList.add(`print-type-${docType}`);
 
-  // Personal Profile
-  if (!printPersonal) {
-    document.body.classList.add("print-hide-personal");
-  } else {
-    document.body.classList.remove("print-hide-personal");
-  }
-
-  // Professional CV
-  if (!printProfessional) {
-    document.body.classList.add("print-hide-professional");
-  } else {
-    document.body.classList.remove("print-hide-professional");
-  }
-
-  // Vitality
-  if (!printVitality) {
+  if (docType === "resume") {
+    document.body.classList.add(`print-resume-${layout}`);
+    // Hide everything except CV
     document.body.classList.add("print-hide-vitality");
-  } else {
-    document.body.classList.remove("print-hide-vitality");
-  }
-
-  // Cognitive
-  if (!printCognitive) {
     document.body.classList.add("print-hide-cognitive");
-  } else {
-    document.body.classList.remove("print-hide-cognitive");
+    document.body.classList.add("print-hide-career");
+  } else if (docType === "report") {
+    // Hide CV and Vitality
+    document.body.classList.add("print-hide-professional");
+    document.body.classList.add("print-hide-vitality");
+  } else { // dossier
+    const printPersonal = document.getElementById("print-opt-personal").checked;
+    const printProfessional = document.getElementById("print-opt-professional").checked;
+    const printVitality = document.getElementById("print-opt-vitality").checked;
+    const printCognitive = document.getElementById("print-opt-cognitive").checked;
+    const printCareer = document.getElementById("print-opt-career").checked;
+
+    if (!printPersonal) document.body.classList.add("print-hide-personal");
+    if (!printProfessional) document.body.classList.add("print-hide-professional");
+    if (!printVitality) document.body.classList.add("print-hide-vitality");
+    if (!printCognitive) document.body.classList.add("print-hide-cognitive");
+    if (!printCareer) document.body.classList.add("print-hide-career");
   }
 
   // Close modal
@@ -585,12 +599,395 @@ function executePDFPrint() {
     
     // Clean up print classes
     setTimeout(() => {
+      document.body.classList.remove("print-active");
       document.body.classList.remove("print-monochrome");
-      document.body.classList.remove("print-all-dashboards");
+      document.body.classList.remove(`print-type-${docType}`);
+      document.body.classList.remove(`print-resume-${layout}`);
       document.body.classList.remove("print-hide-personal");
       document.body.classList.remove("print-hide-professional");
       document.body.classList.remove("print-hide-vitality");
       document.body.classList.remove("print-hide-cognitive");
+      document.body.classList.remove("print-hide-career");
     }, 1000);
   }, 400);
+}
+
+// ==========================================
+// AURA CAREER COMPASS & JOB ENGINE LOGIC
+// ==========================================
+function calculateAlignmentScore(data) {
+  if (!data.passion || !data.targetJob) return 30; // base score if undefined
+  
+  let score = 45;
+  const passionLower = data.passion.toLowerCase();
+  const jobLower = data.targetJob.toLowerCase();
+  
+  // 1. check word overlap between passion and job
+  const passionWords = passionLower.split(/\s+/).filter(w => w.length > 3);
+  const jobWords = jobLower.split(/\s+/).filter(w => w.length > 3);
+  
+  let matches = 0;
+  passionWords.forEach(pw => {
+    if (jobLower.includes(pw)) matches++;
+  });
+  score += Math.min(matches * 15, 30);
+  
+  // 2. check skills overlap with target job
+  if (data.skills && data.skills.length > 0) {
+    let skillMatch = 0;
+    data.skills.forEach(s => {
+      const name = s.name.toLowerCase();
+      if (jobLower.includes(name) || name.split(" ").some(w => w.length > 3 && jobLower.includes(w))) {
+        skillMatch++;
+      }
+    });
+    score += Math.min(skillMatch * 10, 20);
+  }
+  
+  // 3. check experience overlap
+  if (data.work && data.work.length > 0) {
+    let workMatch = false;
+    data.work.forEach(w => {
+      const role = w.role.toLowerCase();
+      if (role.includes(jobLower) || jobLower.includes(role)) workMatch = true;
+    });
+    if (workMatch) score += 10;
+  }
+  
+  return Math.min(score, 100);
+}
+
+function renderCareerCompass(data) {
+  // Update texts
+  document.getElementById("dashboard-passion-display").innerText = data.passion || "No core passion logged. Use the Compiler to define what drives you.";
+  document.getElementById("dashboard-target-job-display").innerText = data.targetJob || "No target profession defined. Enter your goals in the Compiler.";
+
+  // Calculate Alignment
+  const score = calculateAlignmentScore(data);
+  const scoreText = document.getElementById("alignment-score-text");
+  const gaugeFill = document.getElementById("alignment-gauge-fill");
+  const statusTitle = document.getElementById("alignment-status-title");
+  const expText = document.getElementById("alignment-explanation-text");
+
+  scoreText.textContent = `${score}%`;
+  
+  const radius = 40; // SVG circle radius
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (score / 100) * circumference;
+  gaugeFill.style.strokeDasharray = `${circumference} ${circumference}`;
+  gaugeFill.style.strokeDashoffset = offset;
+
+  if (score < 40) {
+    statusTitle.innerText = "Separate Trajectories";
+    statusTitle.style.color = "var(--accent-tertiary)";
+    expText.innerText = "Your target career and core passions diverge significantly. You may feel unfulfilled or bored in your current trajectory. Consider integrating passion-led projects into your workload.";
+  } else if (score < 75) {
+    statusTitle.innerText = "Emerging Harmony";
+    statusTitle.style.color = "var(--accent-secondary)";
+    expText.innerText = "There is clear overlap between your goals and your passions. You are on the right track, but require deliberate actions and skill upgrades to blend them into a single role.";
+  } else {
+    statusTitle.innerText = "Synergistic Resonance";
+    statusTitle.style.color = "#10b981"; // Emerald Green
+    expText.innerText = "Excellent! Your career goals are closely unified with your core passions. This alignment yields high job satisfaction and professional energy.";
+  }
+
+  // Strengths & Weaknesses lists
+  const strengthsList = document.getElementById("career-strengths-list");
+  strengthsList.innerHTML = "";
+  if (data.strengths && data.strengths.trim()) {
+    data.strengths.split(",").forEach(s => {
+      const li = document.createElement("li");
+      li.innerText = s.trim();
+      strengthsList.appendChild(li);
+    });
+  } else {
+    strengthsList.innerHTML = "<li>Autonomy & System Logic</li>";
+  }
+
+  const weaknessesList = document.getElementById("career-weaknesses-list");
+  weaknessesList.innerHTML = "";
+  if (data.growthAreas && data.growthAreas.trim()) {
+    data.growthAreas.split(",").forEach(w => {
+      const li = document.createElement("li");
+      li.innerText = w.trim();
+      weaknessesList.appendChild(li);
+    });
+  } else {
+    weaknessesList.innerHTML = "<li>Tendency to overcomplicate tasks</li>";
+  }
+
+  // Advice banner
+  const adviceBanner = document.getElementById("career-advice-banner");
+  adviceBanner.innerHTML = "";
+  const mainStrength = data.strengths ? data.strengths.split(",")[0].trim() : "System Architecture";
+  const mainWeakness = data.growthAreas ? data.growthAreas.split(",")[0].trim() : "over-engineering";
+  
+  adviceBanner.innerHTML = `
+    <i class="fa-solid fa-lightbulb" style="color: var(--accent-secondary); font-size: 16px;"></i>
+    <div>
+      <strong>Career Action Insight:</strong> Leverage your strength in <strong>${escapeHtml(mainStrength)}</strong> to address your growth area in <strong>${escapeHtml(mainWeakness)}</strong>. For instance, build structured templates to prevent task-creep.
+    </div>
+  `;
+
+  // AI Job Suggestions
+  const jobsContainer = document.getElementById("jobs-suggestion-container");
+  jobsContainer.innerHTML = "";
+
+  const jobSuggestions = getJobSuggestionsForProfile(data);
+  jobSuggestions.forEach(job => {
+    const card = document.createElement("div");
+    card.className = "job-card glass-panel hover-grow";
+    card.innerHTML = `
+      <div class="job-header">
+        <span class="match-badge">${job.match}% Match</span>
+        <span class="safety-badge"><i class="fa-solid fa-shield-halved"></i> ${job.safety}</span>
+      </div>
+      <h4>${escapeHtml(job.title)}</h4>
+      <p class="job-desc">${escapeHtml(job.desc)}</p>
+      <div class="job-footer">
+        <span><i class="fa-solid fa-industry"></i> ${escapeHtml(job.sector)}</span>
+      </div>
+    `;
+    jobsContainer.appendChild(card);
+  });
+
+  // Skills Upgrade Roadmap
+  const roadmapContainer = document.getElementById("skills-roadmap-container");
+  roadmapContainer.innerHTML = "";
+
+  const steps = getRoadmapStepsForProfile(data);
+  steps.forEach((step, idx) => {
+    const item = document.createElement("div");
+    item.className = "roadmap-step-item";
+    item.innerHTML = `
+      <div class="step-badge">${idx + 1}</div>
+      <div class="step-content">
+        <h4>${escapeHtml(step.title)}</h4>
+        <p>${escapeHtml(step.desc)}</p>
+      </div>
+    `;
+    roadmapContainer.appendChild(item);
+  });
+}
+
+function getJobSuggestionsForProfile(data) {
+  const isTechnical = (data.skills && data.skills.some(s => s.category === "technical" || s.category === "tools"));
+  const isEco = (data.bio && (data.bio.toLowerCase().includes("eco") || data.bio.toLowerCase().includes("reef") || data.bio.toLowerCase().includes("sea")));
+  
+  if (isEco) {
+    return [
+      {
+        title: "Autonomous Biosphere Telemetry Architect",
+        match: 94,
+        safety: "High AI Resistance",
+        desc: "Designing and deploying waterproof sensor arrays on marine reefs. Resistant to AI automation because it requires physical navigation, hardware configuration, and live field measurements.",
+        sector: "Eco-Tech & Marine Conservation"
+      },
+      {
+        title: "Closed-Loop Ecological System Officer",
+        match: 86,
+        safety: "Strong Human Imperative",
+        desc: "Overseeing synthetic coastal environments. Combines live physical diagnostics, biological laboratory sample prep, and public advocacy.",
+        sector: "Biosphere Operations"
+      },
+      {
+        title: "AI-Co-piloted Restoration Specialist",
+        match: 78,
+        safety: "Collaborative Safety",
+        desc: "Leverages satellite models to predict reef bleaching thresholds and coordinates physical restoration drives.",
+        sector: "Environmental Agencies"
+      }
+    ];
+  } else if (isTechnical) {
+    return [
+      {
+        title: "AI-Resistant Systems Architect",
+        match: 92,
+        safety: "High AI Resistance",
+        desc: "Developing low-latency custom firmware and embedded safety loops. Protected against AI tools because it requires manual hardware wiring, oscilloscope checks, and low-level C/Rust integrations.",
+        sector: "Embedded & Hardware Systems"
+      },
+      {
+        title: "Symbiotic Carbon-Silicon Compiler Specialist",
+        match: 85,
+        safety: "Emerging Domain",
+        desc: "Designing logic compilers that bridge quantum chips and molecular biological inputs. Requires deep reasoning and physical validation.",
+        sector: "Quantum & Bio-Computing"
+      },
+      {
+        title: "Human-in-the-Loop DSP Engineer",
+        match: 78,
+        safety: "Critical Infrastructure",
+        desc: "Optimizing telemetry signals from neural biosensors. Immune to pure software threats due to regulatory safety constraints and strict physical calibration requirements.",
+        sector: "Biomedical Engineering"
+      }
+    ];
+  } else {
+    return [
+      {
+        title: "AI-Insulated Project Consultant",
+        match: 88,
+        safety: "High Reasoning Safety",
+        desc: "Advises clients on complex hardware setups and human organizational structures. Protected by the high demand for face-to-face negotiations and cross-disciplinary reasoning.",
+        sector: "Management & Tech Advisory"
+      },
+      {
+        title: "Human Operations & Cognitive Specialist",
+        match: 82,
+        safety: "Pure Human Focus",
+        desc: "Coordinates workplace environments using physical/vitality telemetry. Requires deep empathy, interpersonal communication, and tactile setup.",
+        sector: "Human Resources & Wellness"
+      },
+      {
+        title: "AI-Collaborative Product Integrator",
+        match: 75,
+        safety: "Hybrid Adaptability",
+        desc: "Coordinates development pipelines between human developers and generative coding models, maintaining semantic code review.",
+        sector: "Software Operations"
+      }
+    ];
+  }
+}
+
+function getRoadmapStepsForProfile(data) {
+  const target = data.targetJob || "your target career";
+  const upgradeStr = data.skillUpgrade ? data.skillUpgrade.split(",")[0].trim() : "";
+  const currentSkills = data.skills && data.skills.length > 0 ? data.skills.slice(0, 2).map(s => s.name).join(" & ") : "your current skills";
+  
+  return [
+    {
+      title: "Establish Core AI-Resistant Specialization",
+      desc: `Lock in your existing skills in ${currentSkills}. Bring these to master-level (>90% level) so they cannot be easily replaced by automated models.`
+    },
+    {
+      title: `Bridge Passion to Profession`,
+      desc: `Build projects that combine your passion (${data.passion || 'your dreams'}) and your target job (${target}). Publish verified code or design schematics.`
+    },
+    {
+      title: `Target Automation-Safe Skills`,
+      desc: upgradeStr ? `Master "${upgradeStr}" immediately. Focus on physical installations, edge compute, or human coordination where AI lacks a physical interface.` : "Develop skills in Edge computing, real-world deployment, or public communication. These form an absolute defense against generative AI."
+    },
+    {
+      title: "Consolidate Professional Dossier",
+      desc: `Generate and print your Professional Resume and Career assessment reports. Present them to industry experts to obtain mentoring in your target sectors.`
+    }
+  ];
+}
+
+// Chatbot UI handlers
+function appendChatMessage(sender, text) {
+  const chatBody = document.getElementById("chat-messages-container");
+  if (!chatBody) return;
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `chat-msg ${sender}-msg`;
+  msgDiv.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+  chatBody.appendChild(msgDiv);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function triggerAIConsultation(type) {
+  if (!currentProfileData) return;
+  const data = currentProfileData.data;
+  
+  appendChatMessage("user", `Execute query: ${type === 'resume' ? 'Evaluate Resume Safety' : type === 'passion' ? 'Analyze Passion Bridge' : 'Initiate Interview Prep'}`);
+
+  // Show typing indicator
+  appendChatMessage("system", "AURA Intelligence thinking...");
+  
+  setTimeout(() => {
+    // Remove last message (typing indicator)
+    const chatBody = document.getElementById("chat-messages-container");
+    if (chatBody && chatBody.lastChild) {
+      chatBody.removeChild(chatBody.lastChild);
+    }
+    
+    let responseText = "";
+    if (type === 'resume') {
+      const skillsCount = data.skills ? data.skills.length : 0;
+      const mainSkill = data.skills && data.skills.length > 0 ? data.skills[0].name : "your main domain";
+      responseText = `### AURA Resume Assessment Report for ${data.name || 'Operator'}
+      
+**AI-Disruption Safety Score:** 84/100 (Strong Insulation)
+**Critical Evaluation:**
+1. **Strengths:** Your biography details highly reasoning-heavy tasks. Embedded skills like *${mainSkill}* are exceptionally secure because standard LLMs cannot debug live physical hardware cycles or configure analog telemetry boards.
+2. **Weaknesses:** Your resume lists ${skillsCount} skills. Some soft skills or achievements are worded standardly. AI resume scrapers might flag them as boilerplate.
+3. **Enhancement Suggestion:** In your Chronicle under James Cook or ESA, replace passive sentences with active action verbs: 'Fabricated sensor mesh nodes...', 'Optimized logic operations written in Rust, reducing latency by 22%'. Highlight exact, quantifiable constraints.`;
+    } else if (type === 'passion') {
+      responseText = `### Passion-to-Profession Alignment Assessment
+      
+**Passion:** "${data.passion || 'Not specified'}"
+**Target Job:** "${data.targetJob || 'Not specified'}"
+
+**Bridging Blueprint:**
+To successfully convert your passion into a secure, thriving career:
+1. **Interface Creation:** Create a portfolio project that maps your current technical skills directly to your passion. For example, if you love modular synthesizers and biosensors, design an open-source driver bridging plant-potentials to MIDI notes.
+2. **Market Sector Positioning:** Target companies working in the overlap. In your case, focus on *${data.targetIndustries || 'specialized sectors'}* that value deep systems thinking.
+3. **Insider Strategy:** Do not apply to generic entry portals (where AI filters operate). Instead, publish technical summaries on Medium/GitHub, and reach out directly to technical leads.`;
+    } else {
+      const job = data.targetJob || "Principal Systems Engineer";
+      responseText = `### AURA Mock Interview Simulator
+      
+*I am setting up an interview for the position of **${job}**.*
+
+**Question 1 (Technical Reasoning):**
+"In your work, you mentioned dealing with complex data and system limits. Can you explain a scenario where you had to debug an unexpected telemetry failure or compiler optimization bug? How did you isolate the hardware constraints from software faults?"
+
+**Question 2 (Collaboration & Friction):**
+"Since you prefer a **${data.workEnvironment || 'remote'}** environment with a **${data.socialBattery || 'solitary'}** style, how do you handle critical pipeline blockers that require urgent, synchronized alignment with a large cross-functional team? Provide an example of how you lead asynchronously."
+
+*Reply in the chat box below to test your answers!*`;
+    }
+    
+    appendChatMessage("system", responseText);
+  }, 1000);
+}
+
+function handleAIChatSubmit(e) {
+  e.preventDefault();
+  const inputEl = document.getElementById("chat-user-input");
+  const query = inputEl.value.trim();
+  if (!query) return;
+  
+  appendChatMessage("user", query);
+  inputEl.value = "";
+  
+  // Show typing indicator
+  appendChatMessage("system", "AURA Agent formulating reply...");
+  
+  setTimeout(() => {
+    const chatBody = document.getElementById("chat-messages-container");
+    if (chatBody && chatBody.lastChild) {
+      chatBody.removeChild(chatBody.lastChild);
+    }
+    
+    let reply = "";
+    const lowerQuery = query.toLowerCase();
+    const data = currentProfileData ? currentProfileData.data : {};
+    
+    if (lowerQuery.includes("hi") || lowerQuery.includes("hello") || lowerQuery.includes("hey")) {
+      reply = `Hello! How can I help you today? I can evaluate your resume, suggest skill upgrades, or guide you on aligning your passion with your profession.`;
+    } else if (lowerQuery.includes("resume") || lowerQuery.includes("cv") || lowerQuery.includes("improve")) {
+      reply = `To improve your resume, I suggest:
+      1. Action verbs in your Chronicle (e.g., 'Engineered', 'Optimized').
+      2. Grouping skills clearly by category.
+      3. Adding your core Passion to show personality. You can download or print your customized resume by clicking the **Print / PDF** button and selecting "Professional CV / Resume" layout.`;
+    } else if (lowerQuery.includes("job") || lowerQuery.includes("suggestion") || lowerQuery.includes("find")) {
+      reply = `Based on your profile, the best matched AI-resistant roles are:
+      1. **${getJobSuggestionsForProfile(data)[0].title}** (${getJobSuggestionsForProfile(data)[0].match}% match)
+      2. **${getJobSuggestionsForProfile(data)[1].title}** (${getJobSuggestionsForProfile(data)[1].match}% match)
+      You should focus on physical-hardware or highly logical roles which are secure from standard AI text models.`;
+    } else if (lowerQuery.includes("passion") || lowerQuery.includes("boring") || lowerQuery.includes("love")) {
+      reply = `If your passion (${data.passion || 'what you love'}) differs from your current job, you can bridge the gap by:
+      - Creating a side project combining the two.
+      - Acquiring skills in *${data.skillUpgrade || 'target sectors'}*.
+      - Gradually positioning yourself in niche markets like *${data.targetIndustries || 'related industries'}*.`;
+    } else {
+      reply = `Thank you for your response! I have analyzed: "${escapeHtml(query)}". 
+      
+For a role as **${data.targetJob || 'Systems Lead'}**, your answer demonstrates excellent reasoning. Remember to always quantify your achievements (e.g., 'reduced overhead by 15%') and detail your physical validation steps when talking to interviewers. Let me know if you would like me to ask another question!`;
+    }
+    
+    appendChatMessage("system", reply);
+  }, 1000);
 }

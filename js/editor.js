@@ -149,7 +149,8 @@ function populateEditorForm(data) {
     'allergies', 'medical-conditions', 'fitness-level', 'activity-level', 'sleep-rhythm',
     'mbti', 'enneagram', 'zodiac', 'learning-style', 'core-values', 'strengths',
     'growth-areas', 'curiosities', 'stress-coping', 'life-motto', 'hobbies', 'travel-style',
-    'work-environment', 'social-battery', 'daily-routine'
+    'work-environment', 'social-battery', 'daily-routine',
+    'passion', 'targetJob', 'targetIndustries', 'aiWorkPreference', 'skill-upgrade'
   ];
 
   standardFields.forEach(id => {
@@ -226,6 +227,11 @@ function serializeEditorData() {
     workEnvironment: document.getElementById('work-environment').value,
     socialBattery: document.getElementById('social-battery').value,
     dailyRoutine: document.getElementById('daily-routine').value,
+    passion: document.getElementById('passion').value,
+    targetJob: document.getElementById('targetJob').value,
+    targetIndustries: document.getElementById('targetIndustries').value,
+    aiWorkPreference: document.getElementById('aiWorkPreference').value,
+    skillUpgrade: document.getElementById('skill-upgrade').value,
     
     skills: [],
     work: [],

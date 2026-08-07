@@ -76,6 +76,7 @@
         <button class="sidebar-tab" data-tab="tab-vitality" data-translate="sidebar_vitality"><i class="fa-solid fa-heart-pulse"></i> Biological & Vitality</button>
         <button class="sidebar-tab" data-tab="tab-cognitive" data-translate="sidebar_cognitive"><i class="fa-solid fa-brain"></i> Cognitive & Mind</button>
         <button class="sidebar-tab" data-tab="tab-lifestyle" data-translate="sidebar_lifestyle"><i class="fa-solid fa-sliders"></i> Habits & Outlook</button>
+        <button class="sidebar-tab" data-tab="tab-career" data-translate="sidebar_career"><i class="fa-solid fa-compass"></i> Career & Passion</button>
       </aside>
 
       <!-- Center: Form Inputs -->
@@ -434,6 +435,43 @@
             <div class="form-field full-width">
               <label for="daily-routine">Typical Daily Rhythm Blocks <span class="tooltip-trigger" data-tooltip="daily-routine"><i class="fa-solid fa-circle-info"></i></span></label>
               <textarea id="daily-routine" rows="4" placeholder="e.g. 06:00 Hydration & stretches | 07:30 Math analysis study | 09:00 Deep firmware development..." oninput="triggerFormChange()"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 6: CAREER & PASSION -->
+        <div id="tab-career" class="editor-form-section">
+          <h3 data-translate="sidebar_career"><i class="fa-solid fa-compass"></i> Career & Passion</h3>
+          <p class="form-section-desc">Specify your passion and desired path to receive tailored AI job recommendations and skill alignments.</p>
+
+          <div class="form-grid">
+            <div class="form-field full-width">
+              <label for="passion" data-translate="passion_label">Core Passion / Dream Life</label>
+              <textarea id="passion" rows="3" placeholder="What are you truly passionate about? e.g. Building sustainable agricultural systems, painting virtual dreamscapes..." oninput="triggerFormChange()"></textarea>
+            </div>
+            
+            <div class="form-field">
+              <label for="targetJob" data-translate="target_job_label">Target Profession / Role</label>
+              <input type="text" id="targetJob" placeholder="e.g. Lead Robotics Engineer, Digital Artist" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field">
+              <label for="targetIndustries" data-translate="target_industries_label">Target Industry Sectors</label>
+              <input type="text" id="targetIndustries" placeholder="e.g. Space Tech, Healthcare, Fine Arts" oninput="triggerFormChange()">
+            </div>
+            
+            <div class="form-field full-width">
+              <label for="aiWorkPreference" data-translate="ai_pref_label">Desired AI Interaction Model</label>
+              <select id="aiWorkPreference" onchange="triggerFormChange()">
+                <option value="resistant" data-translate="ai_pref_resistant">AI-Resistant Focus (Tactile & Logic)</option>
+                <option value="collaborative" data-translate="ai_pref_collaborative" selected>AI-Collaborative (Co-pilot)</option>
+                <option value="pure-human" data-translate="ai_pref_free">Pure Human Craft (No AI)</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="skill-upgrade" data-translate="skill_upgrade_label">Current Skill-Up Targets (comma separated)</label>
+              <textarea id="skill-upgrade" rows="2" placeholder="e.g. Master Deep Learning, Advanced Public Speaking, PCB Layout Design" oninput="triggerFormChange()"></textarea>
             </div>
           </div>
         </div>

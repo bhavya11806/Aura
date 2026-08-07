@@ -3007,3 +3007,594 @@ select:focus {
   margin-top: 10px;
   color: var(--accent-primary);
 }
+
+/* ==========================================
+   AURA CAREER COMPASS STYLING
+   ========================================== */
+.career-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 10px 0;
+}
+
+.career-row-top,
+.career-row-mid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .career-row-top,
+  .career-row-mid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Passion Alignment */
+.career-alignment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.alignment-display {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--hover-bg);
+  padding: 16px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--glass-border);
+}
+.alignment-gauge {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+.alignment-gauge svg {
+  width: 100%;
+  height: 100%;
+}
+.alignment-gauge .gauge-bg {
+  fill: none;
+  stroke: var(--glass-border);
+  stroke-width: 8;
+}
+.alignment-gauge .gauge-fill {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+.alignment-gauge .gauge-text {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 18px;
+  fill: var(--text-main);
+  text-anchor: middle;
+}
+.alignment-details h4 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.alignment-details p {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.passion-summary-block {
+  background: var(--input-bg);
+  padding: 12px 16px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  font-size: 13px;
+}
+.passion-summary-block h5 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.passion-summary-block p {
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+/* Strengths & Weaknesses */
+.career-strengths-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.vectors-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.vector-box h4 {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vector-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vector-list li {
+  font-size: 13px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+}
+.alignment-tip-banner {
+  background: var(--hover-bg);
+  border-left: 4px solid var(--accent-secondary);
+  padding: 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: 12px;
+  line-height: 1.4;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Job Suggestions */
+.job-suggestions-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.jobs-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.job-card {
+  padding: 14px;
+  border-radius: var(--border-radius-md);
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.job-card:hover {
+  background: var(--card-bg-hover);
+  transform: translateY(-2px);
+}
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.match-badge {
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.safety-badge {
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--badge-text);
+  padding: 3px 8px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.job-card h4 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+}
+.job-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.job-footer {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Roadmap Stepper */
+.skills-roadmap-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.roadmap-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  padding-left: 20px;
+}
+.roadmap-stepper::before {
+  content: '';
+  position: absolute;
+  left: 31px;
+  top: 15px;
+  bottom: 15px;
+  width: 2px;
+  background: var(--glass-border);
+}
+.roadmap-step-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+.step-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  z-index: 1;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+.step-content h4 {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.step-content p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Chat AI Console */
+.ai-helper-chat-card {
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+}
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.helper-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.helper-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--glass-border);
+}
+.helper-info h3 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+}
+.helper-info .status {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.helper-info .status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+}
+.chat-actions {
+  display: flex;
+  gap: 8px;
+}
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 12px;
+}
+.chat-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.chat-msg p {
+  margin: 0;
+}
+.chat-msg h3 {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+  color: var(--accent-primary);
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 4px;
+}
+.chat-msg ul, .chat-msg ol {
+  margin-left: 16px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.user-msg {
+  align-self: flex-end;
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+.system-msg {
+  align-self: flex-start;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  border-bottom-left-radius: 2px;
+}
+.chat-input-bar {
+  display: flex;
+  gap: 10px;
+}
+.chat-input-bar input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-main);
+  font-size: 13px;
+}
+.chat-input-bar input:focus {
+  border-color: var(--input-focus);
+  outline: none;
+}
+
+/* ==========================================
+   AURA PRINT MEDIA CUSTOMIZATIONS
+   ========================================== */
+@media print {
+  /* Hide interactive layouts */
+  .app-header, 
+  .main-nav, 
+  .portal-footer, 
+  .help-box-btn, 
+  .dashboard-switcher, 
+  .ribbon-buttons,
+  .chat-input-bar, 
+  .chat-actions, 
+  .header-lang-wrapper,
+  .active-profile-badge,
+  .outlook-summary h3,
+  .chronotype-icon,
+  .bmi-slider-track,
+  .bmi-labels {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .dashboard-viewport {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Specific printing template views */
+  .print-active .dashboard-section {
+    display: none !important;
+  }
+
+  /* Resume Printing Mode */
+  .print-type-resume #dash-professional {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Report Printing Mode */
+  .print-type-report #dash-cognitive,
+  .print-type-report #dash-career {
+    display: block !important;
+    width: 100% !important;
+    page-break-after: always;
+  }
+
+  /* Full Dossier Printing Mode */
+  .print-type-dossier .dashboard-section {
+    display: block !important;
+  }
+  .print-type-dossier #dash-professional,
+  .print-type-dossier #dash-vitality,
+  .print-type-dossier #dash-cognitive,
+  .print-type-dossier #dash-career {
+    page-break-after: always;
+  }
+
+  /* Selective checks */
+  .print-hide-personal .prof-col-side,
+  .print-hide-personal .dossier-avatar-card,
+  .print-hide-personal .coordinates-card {
+    display: none !important;
+  }
+  .print-hide-professional #dash-professional {
+    display: none !important;
+  }
+  .print-hide-vitality #dash-vitality {
+    display: none !important;
+  }
+  .print-hide-cognitive #dash-cognitive {
+    display: none !important;
+  }
+  .print-hide-career #dash-career {
+    display: none !important;
+  }
+
+  .glass-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 10px 0 !important;
+    margin-bottom: 15px !important;
+    color: #000000 !important;
+  }
+
+  h2, h3, h4, h5 {
+    color: #000000 !important;
+  }
+
+  .tag-item, .badge, .social-badge {
+    border: 1px solid #000000 !important;
+    background: transparent !important;
+    color: #000000 !important;
+    border-radius: 3px !important;
+    padding: 2px 6px !important;
+  }
+
+  /* Layout Theme Overrides */
+  /* CLASSIC LAYOUT */
+  .print-resume-classic {
+    font-family: 'Georgia', 'Times New Roman', serif !important;
+  }
+  .print-resume-classic .professional-grid {
+    display: block !important;
+  }
+  .print-resume-classic .prof-col-side {
+    width: 100% !important;
+    border-bottom: 2px solid #000000 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 15px !important;
+  }
+  .print-resume-classic .coordinates-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 15px !important;
+    list-style: none !important;
+  }
+  .print-resume-classic .coordinates-list li {
+    font-size: 10pt !important;
+  }
+  .print-resume-classic h3 {
+    border-bottom: 1px solid #000000 !important;
+    padding-bottom: 4px !important;
+    margin-top: 15px !important;
+    font-size: 13pt !important;
+    text-transform: uppercase !important;
+  }
+  .print-resume-classic .timeline-node {
+    margin-bottom: 12px !important;
+    border-left: 2px solid #000000 !important;
+    padding-left: 10px !important;
+  }
+
+  /* CREATIVE LAYOUT */
+  .print-resume-creative .professional-grid {
+    display: grid !important;
+    grid-template-columns: 260px 1fr !important;
+    gap: 24px !important;
+  }
+  .print-resume-creative .prof-col-side {
+    border-right: 1px solid #dddddd !important;
+    padding-right: 20px !important;
+  }
+  .print-resume-creative .glass-card {
+    border-left: 3px solid #0071e3 !important;
+    padding-left: 12px !important;
+    background: #fafafa !important;
+    margin-bottom: 15px !important;
+  }
+  .print-resume-creative h3 {
+    color: #0071e3 !important;
+    font-size: 12pt !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* TECH LAYOUT */
+  .print-resume-tech {
+    font-family: 'Fira Code', 'Courier New', monospace !important;
+    font-size: 9pt !important;
+  }
+  .print-resume-tech .glass-card {
+    border: 1px dashed #000000 !important;
+    border-radius: 0 !important;
+    padding: 10px !important;
+    margin-bottom: 15px !important;
+  }
+  .print-resume-tech h3 {
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 2px 6px !important;
+    font-size: 10pt !important;
+    display: inline-block !important;
+  }
+  .print-resume-tech .skill-fill {
+    background: #000000 !important;
+  }
+  
+  /* MONOCHROME OVERRIDE */
+  .print-monochrome h3,
+  .print-monochrome h2,
+  .print-monochrome h4,
+  .print-monochrome h5 {
+    color: #000000 !important;
+  }
+  .print-monochrome .glass-card {
+    border-left-color: #000000 !important;
+  }
+}

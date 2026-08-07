@@ -60,7 +60,19 @@ const AURA_TRANSLATIONS = {
     help_close: "Close Help Box",
     clear_records_btn: "Purge All Records",
     email_label: "Operator Email Address",
-    password_label: "Access Password"
+    password_label: "Access Password",
+    sidebar_career: "Career & Passion",
+    tab_career: "Career Compass",
+    passion_label: "Core Passion / Dream Life",
+    target_job_label: "Target Profession / Role",
+    target_industries_label: "Target Industry Sectors",
+    ai_pref_label: "Desired AI Interaction Model",
+    ai_pref_resistant: "AI-Resistant Focus (Tactile & Logic)",
+    ai_pref_collaborative: "AI-Collaborative (Co-pilot)",
+    ai_pref_free: "Pure Human Craft (No AI)",
+    skill_upgrade_label: "Current Skill-Up Targets",
+    btn_print_resume: "Print Professional Resume",
+    btn_print_report: "Print Career Assessment Report"
   },
   hi: {
     logo_main: "आभा",
@@ -119,7 +131,19 @@ const AURA_TRANSLATIONS = {
     help_close: "सहायता बॉक्स बंद करें",
     clear_records_btn: "सभी रिकॉर्ड मिटाएं",
     email_label: "ऑपरेटर ईमेल पता",
-    password_label: "एक्सेस पासवर्ड"
+    password_label: "एक्सेस पासवर्ड",
+    sidebar_career: "कैरियर और जुनून",
+    tab_career: "कैरियर कम्पास",
+    passion_label: "मुख्य जुनून / सपना",
+    target_job_label: "लक्षित पेशा / भूमिका",
+    target_industries_label: "लक्षित उद्योग क्षेत्र",
+    ai_pref_label: "वांछित एआई इंटरेक्शन मॉडल",
+    ai_pref_resistant: "एआई-प्रतिरोधी फोकस (स्पर्श और तर्क)",
+    ai_pref_collaborative: "एआई-सहयोगी (सह-चालक)",
+    ai_pref_free: "शुद्ध मानव शिल्प (कोई एआई नहीं)",
+    skill_upgrade_label: "वर्तमान कौशल विकास लक्ष्य",
+    btn_print_resume: "पेशेवर रिज्यूमे प्रिंट करें",
+    btn_print_report: "कैरियर एआई मूल्यांकन रिपोर्ट प्रिंट करें"
   },
   es: {
     logo_main: "Aura",
@@ -178,7 +202,19 @@ const AURA_TRANSLATIONS = {
     help_close: "Cerrar Caja de Ayuda",
     clear_records_btn: "Eliminar Todos los Registros",
     email_label: "Correo Electrónico del Operador",
-    password_label: "Contraseña de Acceso"
+    password_label: "Contraseña de Acceso",
+    sidebar_career: "Carrera y Pasión",
+    tab_career: "Brújula de Carrera",
+    passion_label: "Pasión Principal / Vida de Ensueño",
+    target_job_label: "Profesión / Rol Objetivo",
+    target_industries_label: "Sectores Industriales Objetivo",
+    ai_pref_label: "Modelo de Interacción IA Deseado",
+    ai_pref_resistant: "Enfoque Resistente a la IA (Táctil y Lógica)",
+    ai_pref_collaborative: "Colaborativo con IA (Copiloto)",
+    ai_pref_free: "Artesanía Humana Pura (Sin IA)",
+    skill_upgrade_label: "Objetivos de Mejora de Habilidades",
+    btn_print_resume: "Imprimir Currículum Profesional",
+    btn_print_report: "Imprimir Informe de Evaluación de Carrera"
   }
 };
 
